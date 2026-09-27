@@ -1,0 +1,374 @@
+/* ============================================================
+   Codoodle — Global base
+   ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.6;
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+::selection {
+  background: var(--coral);
+  color: #000;
+}
+
+:focus-visible {
+  outline: 2px solid var(--peri);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- Layout helpers ---------- */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.section--tight {
+  padding-block: clamp(2rem, 3vw, 3rem);
+}
+
+.narrow {
+  max-width: var(--container-narrow);
+}
+
+/* Shared page hero (inner-page headers) */
+.page-hero {
+  padding-top: clamp(6rem, 9vw, 8rem);
+  padding-bottom: clamp(0.5rem, 2vw, 1.25rem);
+}
+
+.page-hero__title {
+  font-size: var(--step-5);
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.page-hero__title .doodle-word {
+  font-size: 1.05em;
+}
+
+.page-hero__lead {
+  margin-top: 1.1rem;
+  max-width: 52ch;
+  font-size: var(--step-0);
+}
+
+/* Shared section heading — consistent, compact rhythm on every page */
+.section-head {
+  max-width: 60ch;
+  margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+}
+
+.section-head .eyebrow {
+  margin-bottom: 0.85rem;
+}
+
+.section-head .section-title {
+  color: var(--ink);
+}
+
+/* ---------- Type ---------- */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 1.7rem;
+  height: 1px;
+  background: var(--coral);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.doodle-word {
+  font-family: var(--font-doodle);
+  font-weight: 700;
+  font-size: 1.18em;
+  line-height: 1.15;
+  /* extra right padding: cursive glyphs (e, ?, t...) paint further
+     right than their font-metric advance width, past where a
+     background-clip:text gradient would otherwise stop painting —
+     without this, that sliver of the letter renders invisible. */
+  padding-inline: 0.08em 0.32em;
+  margin-inline-end: -0.26em;
+  display: inline-block;
+  overflow: visible;
+  background: linear-gradient(90deg, var(--coral), var(--peri), var(--coral));
+  background-size: 300% auto;
+  background-repeat: repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: doodleShimmer 5s linear infinite;
+}
+
+@keyframes doodleShimmer {
+  to {
+    background-position: -220% 0;
+  }
+}
+
+.lead {
+  font-size: var(--step-1);
+  color: var(--ink-dim);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+.section-title {
+  font-size: var(--step-3);
+}
+
+.section-title .doodle-word {
+  font-size: 1.08em;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  --_bg: var(--ink);
+  --_fg: #000;
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 1.5rem;
+  border-radius: var(--r-pill);
+  background: var(--_bg);
+  color: var(--_fg);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transition: transform 0.25s var(--ease-out), background 0.25s ease,
+    color 0.25s ease, box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+/* moving sheen on hover */
+.btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    110deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 80%
+  );
+  transform: translateX(-120%);
+  transition: transform 0.6s var(--ease-out);
+}
+
+.btn:hover::before {
+  transform: translateX(120%);
+}
+
+.btn > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn .arrow {
+  transition: transform 0.3s var(--ease-out);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -12px rgba(255, 106, 61, 0.5);
+}
+
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.btn:hover .arrow {
+  transform: translateX(4px);
+}
+
+.btn--coral {
+  --_bg: var(--coral);
+  --_fg: #120500;
+}
+
+.btn--ghost {
+  --_bg: transparent;
+  --_fg: var(--ink);
+  border: 1px solid var(--line-strong);
+}
+
+.btn--ghost:hover {
+  border-color: var(--ink);
+  box-shadow: none;
+}
+
+/* text link with doodle underline on hover */
+.link-doodle {
+  position: relative;
+  color: var(--ink);
+  font-weight: 500;
+  padding-bottom: 2px;
+}
+
+.link-doodle::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='6' viewBox='0 0 60 6'%3E%3Cpath d='M1 3 C 12 0, 20 6, 31 3 S 50 0, 59 3' fill='none' stroke='%23FF6A3D' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 100% 6px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.link-doodle:hover::after {
+  transform: scaleX(1);
+}
+
+/* ---------- Divider ---------- */
+.rule {
+  height: 1px;
+  background: var(--line);
+  border: 0;
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ============================================================
+   Motion system: route transitions, scroll progress, tilt
+   ============================================================ */
+
+/* page enter transition on route change — a soft 3D settle, not just a fade */
+.route-view {
+  perspective: 1400px;
+  animation: routeEnter 0.65s var(--ease-out) both;
+  transform-style: preserve-3d;
+}
+
+@keyframes routeEnter {
+  from {
+    opacity: 0;
+    transform: translateY(22px) scale(0.985) rotateX(4deg);
+    filter: blur(9px);
+  }
+  60% {
+    filter: blur(0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+/* thin scroll-progress bar */
+.scrollprog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--coral), var(--peri));
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  z-index: 200;
+  will-change: transform;
+}
+
+/* 3D tilt surface (JS sets --rx / --ry) */
+.tilt {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.4s var(--ease-out);
+  transform-style: preserve-3d;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-view {
+    animation: none;
+  }
+}

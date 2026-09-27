@@ -1,0 +1,173 @@
+/* ============================================================
+   Contact icons — email / WhatsApp / Instagram
+   ============================================================ */
+.cico {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  list-style: none;
+  padding: 0;
+}
+
+.cico__btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  color: var(--ink-dim);
+  transition: color 0.3s ease, transform 0.3s var(--ease-out), filter 0.3s ease;
+}
+
+.cico__icon {
+  position: relative;
+  z-index: 1;
+  width: 1.5rem;
+  height: 1.5rem;
+  display: grid;
+  place-items: center;
+}
+
+.cico__icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cico__btn:hover,
+.cico__btn:focus-visible {
+  color: var(--coral);
+  transform: translateY(-3px) scale(1.12);
+  filter: drop-shadow(0 6px 14px rgba(255, 106, 61, 0.45));
+}
+
+.cico__btn--whatsapp:hover,
+.cico__btn--whatsapp:focus-visible {
+  color: #25d366;
+  filter: drop-shadow(0 6px 14px rgba(37, 211, 102, 0.5));
+}
+
+.cico__btn--instagram:hover,
+.cico__btn--instagram:focus-visible {
+  color: var(--peri);
+  filter: drop-shadow(0 6px 14px rgba(124, 140, 255, 0.45));
+}
+
+.cico__btn:active {
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* ---------- Wide variant — used on the Contact page ---------- */
+.cico--wide {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+}
+
+.cico--wide li {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: cicoIn 0.6s var(--ease-out) forwards;
+  animation-delay: calc(var(--cico-i) * 90ms);
+}
+
+.cico--wide .cico__btn {
+  width: 100%;
+  height: auto;
+  justify-content: flex-start;
+  gap: 0.9rem;
+  padding: 0.85rem 1.1rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-strong);
+  background: rgba(244, 241, 233, 0.05);
+  overflow: hidden;
+}
+
+.cico--wide .cico__btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--coral), var(--peri));
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.3s ease, transform 0.4s var(--ease-out);
+}
+
+.cico--wide .cico__btn--whatsapp::before {
+  background: linear-gradient(135deg, #25d366, #128c7e);
+}
+
+.cico--wide .cico__btn:hover,
+.cico--wide .cico__btn:focus-visible {
+  color: #120500;
+  border-color: transparent;
+  transform: translateY(-3px) scale(1.02);
+  filter: none;
+  box-shadow: 0 14px 30px -14px rgba(255, 106, 61, 0.55);
+}
+
+.cico--wide .cico__btn--whatsapp:hover,
+.cico--wide .cico__btn--whatsapp:focus-visible {
+  color: #05130d;
+  box-shadow: 0 14px 30px -14px rgba(37, 211, 102, 0.55);
+}
+
+.cico--wide .cico__btn:hover::before,
+.cico--wide .cico__btn:focus-visible::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.cico--wide .cico__icon {
+  flex: none;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: var(--r-pill);
+  background: rgba(244, 241, 233, 0.06);
+}
+
+.cico--wide .cico__btn:hover .cico__icon {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.cico__text {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.cico__label {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.cico--wide .cico__btn:hover .cico__label {
+  color: #120500;
+}
+
+.cico__sub {
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+}
+
+.cico--wide .cico__btn:hover .cico__sub {
+  color: rgba(18, 5, 0, 0.7);
+}
+
+@keyframes cicoIn {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cico--wide li {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

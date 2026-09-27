@@ -1,0 +1,155 @@
+/* ============================================================
+   Floating WhatsApp button + greeting bubble
+   ============================================================ */
+.fcontact {
+  position: fixed;
+  right: clamp(1rem, 3.5vw, 2rem);
+  bottom: clamp(1rem, 3.5vw, 2rem);
+  z-index: 150;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: 0.9rem;
+}
+
+.fcontact__toggle {
+  position: relative;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #25d366, #128c7e);
+  color: #fff;
+  box-shadow: 0 16px 40px -14px rgba(37, 211, 102, 0.6);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s ease;
+}
+
+.fcontact__toggle:hover {
+  transform: translateY(-3px) scale(1.06);
+  box-shadow: 0 20px 46px -12px rgba(37, 211, 102, 0.7);
+}
+
+.fcontact__toggle:active {
+  transform: translateY(-1px) scale(0.96);
+}
+
+.fcontact__icon {
+  width: 1.7rem;
+  height: 1.7rem;
+}
+
+.fcontact__ping {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid #25d366;
+  opacity: 0.6;
+  animation: fcontactPing 2.6s var(--ease-soft) infinite;
+}
+
+@keyframes fcontactPing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  70%,
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* ---------- Greeting bubble ---------- */
+.fcontact__bubble {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  max-width: 15.5rem;
+  padding: 0.85rem 1.9rem 0.85rem 1rem;
+  border-radius: var(--r-md);
+  background: rgba(6, 6, 6, 0.92);
+  border: 1px solid var(--line-strong);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: var(--ink);
+  font-size: var(--step--1);
+  line-height: 1.45;
+  box-shadow: 0 20px 50px -20px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transform: translateY(10px) scale(0.94);
+  pointer-events: none;
+  transform-origin: bottom right;
+  transition: opacity 0.35s var(--ease-out), transform 0.4s var(--ease-out);
+}
+
+.fcontact__bubble.is-shown {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+  animation: bubbleBob 3.2s var(--ease-soft) 0.6s infinite;
+}
+
+.fcontact__wave {
+  font-size: 1.15rem;
+  flex: none;
+  animation: waveHand 2.4s ease-in-out infinite;
+  transform-origin: 70% 70%;
+}
+
+@keyframes waveHand {
+  0%, 100% { transform: rotate(0deg); }
+  15% { transform: rotate(14deg); }
+  30% { transform: rotate(-8deg); }
+  45% { transform: rotate(14deg); }
+  60% { transform: rotate(0deg); }
+}
+
+@keyframes bubbleBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.fcontact__dismiss {
+  position: absolute;
+  top: 0.35rem;
+  right: 0.5rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  display: grid;
+  place-items: center;
+  color: var(--ink-faint);
+  font-size: 1rem;
+  line-height: 1;
+  border-radius: 50%;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.fcontact__dismiss:hover {
+  color: var(--ink);
+  background: rgba(244, 241, 233, 0.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fcontact__ping {
+    animation: none;
+    opacity: 0;
+  }
+  .fcontact__bubble.is-shown {
+    animation: none;
+  }
+  .fcontact__wave {
+    animation: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .fcontact__toggle {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+  .fcontact__bubble {
+    max-width: 13rem;
+  }
+}

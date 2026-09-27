@@ -1,0 +1,147 @@
+/* ============================================================
+   JumpMenu — small fixed side tab (Work page), opens a solid panel
+   ============================================================ */
+.jmenu {
+  position: fixed;
+  z-index: 140;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* ---------- Collapsed tab ---------- */
+.jmenu__tab {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.7rem 0.55rem 0.6rem;
+  border-radius: 0 var(--r-pill) var(--r-pill) 0;
+  border: 1px solid var(--line-strong);
+  border-left: none;
+  background: rgba(6, 6, 6, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--ink-dim);
+  box-shadow: 8px 0 26px -14px rgba(0, 0, 0, 0.7);
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease,
+    transform 0.35s var(--ease-out), padding-right 0.3s var(--ease-out);
+}
+
+.jmenu__tab:hover,
+.jmenu.is-open .jmenu__tab {
+  color: var(--coral);
+  border-color: var(--coral);
+  background: rgba(255, 106, 61, 0.08);
+}
+
+.jmenu.is-open .jmenu__tab {
+  transform: translateX(2px);
+}
+
+.jmenu__icon {
+  width: 1rem;
+  height: 1rem;
+  flex: none;
+}
+
+.jmenu__tabtext {
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* ---------- Panel ---------- */
+.jmenu__panel {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%) translateX(-12px) scale(0.94);
+  transform-origin: left center;
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  width: 13.5rem;
+  padding: 0.85rem 0.6rem 0.6rem;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line-strong);
+  /* fully opaque — this was reading as see-through before */
+  background: #0a0a0a;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.9);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s var(--ease-out), transform 0.32s var(--ease-out);
+}
+
+.jmenu.is-open .jmenu__panel {
+  z-index: 1;
+  opacity: 1;
+  transform: translateY(-50%) translateX(0) scale(1);
+  pointer-events: auto;
+}
+
+.jmenu__title {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  padding: 0 0.6rem 0.5rem;
+  margin-bottom: 0.2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.jmenu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--ink-dim);
+  text-align: left;
+  transition: color 0.2s ease, background 0.2s ease, transform 0.2s var(--ease-out);
+}
+
+.jmenu__item:hover,
+.jmenu__item:focus-visible {
+  color: var(--ink);
+  background: rgba(255, 106, 61, 0.1);
+  transform: translateX(3px);
+}
+
+.jmenu__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--coral);
+  flex: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jmenu__tab,
+  .jmenu__panel {
+    transition: opacity 0.15s ease;
+  }
+}
+
+@media (max-width: 640px) {
+  .jmenu__tabtext {
+    display: none;
+  }
+  .jmenu__tab {
+    padding: 0.45rem;
+    border-radius: 0 999px 999px 0;
+  }
+  .jmenu__icon {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+  .jmenu__panel {
+    width: 11.5rem;
+    padding: 0.7rem 0.5rem 0.5rem;
+  }
+  .jmenu__item {
+    font-size: 0.78rem;
+    padding: 0.42rem 0.5rem;
+  }
+}

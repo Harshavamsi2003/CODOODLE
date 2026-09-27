@@ -1,0 +1,30 @@
+/* ============================================================
+   404
+   ============================================================ */
+.notfound {
+  min-height: 70vh;
+  display: grid;
+  place-items: center;
+  padding-top: 6rem;
+}
+
+.notfound__inner {
+  text-align: center;
+  max-width: 40ch;
+  display: grid;
+  gap: 1.1rem;
+  justify-items: center;
+}
+
+.notfound__squiggle {
+  width: 6rem;
+  margin-bottom: 0.5rem;
+}
+
+.notfound__title {
+  font-size: var(--step-4);
+}
+
+.notfound__lead {
+  margin-bottom: 0.6rem;
+}

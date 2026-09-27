@@ -1,0 +1,132 @@
+/* ============================================================
+   Testimonials
+   ============================================================ */
+.tm-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: clamp(1.2rem, 3vw, 1.8rem);
+}
+
+.tm-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.6rem, 3.4vw, 2.2rem);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(160deg, rgba(244, 241, 233, 0.03), transparent 60%);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-out), border-color 0.3s ease,
+    box-shadow 0.4s ease;
+}
+
+.tm-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--line-strong);
+  box-shadow: 0 30px 60px -34px rgba(255, 106, 61, 0.35);
+}
+
+.tm-card__squiggle {
+  position: absolute;
+  top: -0.6rem;
+  right: -0.4rem;
+  width: 3.6rem;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.tm-card__quotemark {
+  font-family: var(--font-display);
+  font-size: 3.4rem;
+  line-height: 0.6;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.tm-card__quote {
+  font-size: var(--step-0);
+  line-height: 1.65;
+  color: var(--ink-dim);
+  flex: 1;
+}
+
+.tm-card__foot {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 1.6rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid var(--line);
+}
+
+.tm-card__avatar {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  flex: none;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--step-0);
+  color: #12070a;
+}
+
+.tm-card__name {
+  display: block;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tm-card__company {
+  display: block;
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  margin-top: 0.15rem;
+}
+
+.tm-card__link {
+  margin-left: auto;
+  flex: none;
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  padding: 0.4rem 0.7rem;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  transition: color 0.25s ease, border-color 0.25s ease, transform 0.25s var(--ease-out);
+}
+
+.tm-card__link:hover {
+  color: var(--coral);
+  border-color: var(--coral);
+  transform: translateY(-2px);
+}
+
+/* ---------- Ghost / "more coming" card ---------- */
+.tm-card--ghost {
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.8rem;
+  border-style: dashed;
+  background: none;
+  color: var(--ink-faint);
+}
+
+.tm-card__star {
+  width: 1.4rem;
+}
+
+.tm-ghost__t {
+  font-size: var(--step-0);
+  color: var(--ink-dim);
+  max-width: 32ch;
+}
+
+@media (max-width: 640px) {
+  .tm-card__foot {
+    flex-wrap: wrap;
+  }
+  .tm-card__link {
+    margin-left: 0;
+  }
+}

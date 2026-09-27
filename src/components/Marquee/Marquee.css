@@ -1,0 +1,109 @@
+/* ============================================================
+   Marquee — two rows of pill chips, drifting opposite directions
+   ============================================================ */
+.marquee {
+  padding-block: clamp(1.1rem, 2.6vw, 1.6rem);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.marquee__row {
+  position: relative;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 6%,
+    #000 94%,
+    transparent
+  );
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+
+.marquee__track {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  white-space: nowrap;
+  will-change: transform;
+}
+
+.marquee__row--left .marquee__track {
+  animation: marqueeLeft 38s linear infinite;
+}
+
+.marquee__row--right .marquee__track {
+  animation: marqueeRight 38s linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeLeft {
+  to { transform: translateX(-50%); }
+}
+
+@keyframes marqueeRight {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  background: rgba(244, 241, 233, 0.03);
+  font-family: var(--font-mono);
+  font-size: clamp(0.8rem, 1.5vw, 0.92rem);
+  color: var(--ink-dim);
+  letter-spacing: 0.01em;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease,
+    transform 0.3s var(--ease-out);
+}
+
+.marquee__item:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+  background: rgba(255, 106, 61, 0.06);
+  transform: translateY(-2px);
+}
+
+.marquee__dot {
+  color: var(--coral);
+  font-size: 0.85em;
+  flex: none;
+}
+
+/* This strip is purely decorative and the whole point is continuous
+   motion, so it keeps drifting on every device — including when the
+   OS requests reduced motion (class selector here outranks the
+   universal-selector kill-switch in global.css). */
+@media (prefers-reduced-motion: reduce) {
+  .marquee__row--left .marquee__track {
+    animation: marqueeLeft 38s linear infinite !important;
+  }
+  .marquee__row--right .marquee__track {
+    animation: marqueeRight 38s linear infinite !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .marquee {
+    gap: 0.55rem;
+  }
+  .marquee__track {
+    gap: 0.45rem;
+  }
+  .marquee__item {
+    padding: 0.42rem 0.8rem;
+    font-size: 0.76rem;
+    gap: 0.4rem;
+  }
+}

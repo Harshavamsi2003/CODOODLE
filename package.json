@@ -1,0 +1,23 @@
+{
+  "name": "codoodle",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Codoodle — Code + Doodle. A web studio that blueprints, designs and ships premium websites, portfolios and e-commerce stores.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.2"
+  },
+  "devDependencies": {
+    "@sparticuz/chromium": "^149.0.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "puppeteer-core": "^25.3.0",
+    "vite": "^5.4.8"
+  }
+}

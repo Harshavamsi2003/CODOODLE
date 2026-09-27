@@ -1,0 +1,55 @@
+/* ============================================================
+   Codoodle — Design Tokens
+   Concept: "Code meets Doodle" on a pure-black canvas.
+   ============================================================ */
+
+:root {
+  /* --- Canvas & ink --- */
+  --bg: #000000;              /* pure black, no patterns */
+  --ink: #f4f1e9;             /* chalk white */
+  --ink-dim: rgba(244, 241, 233, 0.64);
+  --ink-faint: rgba(244, 241, 233, 0.38);
+  --ink-ghost: rgba(244, 241, 233, 0.16);
+  --line: rgba(244, 241, 233, 0.12);
+  --line-strong: rgba(244, 241, 233, 0.24);
+
+  /* --- Two-marker doodle palette --- */
+  --coral: #ff6a3d;          /* marker one */
+  --coral-soft: rgba(255, 106, 61, 0.14);
+  --peri: #7c8cff;           /* marker two */
+  --peri-soft: rgba(124, 140, 255, 0.14);
+  --butter: #ffc94d;         /* rare third mark */
+
+  /* --- Type --- */
+  --font-display: "Space Grotesk", system-ui, sans-serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-doodle: "Caveat", cursive;
+
+  /* Fluid type scale — tightened so nothing feels oversized on laptops */
+  --step--1: clamp(0.76rem, 0.73rem + 0.12vw, 0.82rem);
+  --step-0: clamp(0.94rem, 0.9rem + 0.16vw, 1rem);
+  --step-1: clamp(1.12rem, 1.04rem + 0.32vw, 1.3rem);
+  --step-2: clamp(1.35rem, 1.2rem + 0.7vw, 1.8rem);
+  --step-3: clamp(1.7rem, 1.4rem + 1.4vw, 2.5rem);
+  --step-4: clamp(2.1rem, 1.7rem + 2vw, 3.2rem);
+  --step-5: clamp(2.4rem, 1.7rem + 3.2vw, 4rem);
+
+  /* --- Layout --- */
+  --container: 1180px;
+  --container-narrow: 760px;
+  --gutter: clamp(1.15rem, 4vw, 3rem);
+  /* Section rhythm — much tighter to kill the big empty gaps */
+  --section-y: clamp(2.75rem, 4.5vw, 4.25rem);
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --dur: 0.7s;
+
+  /* --- Radii --- */
+  --r-sm: 6px;
+  --r-md: 12px;
+  --r-lg: 18px;
+  --r-pill: 999px;
+}

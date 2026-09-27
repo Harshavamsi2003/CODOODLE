@@ -1,0 +1,44 @@
+/* ============================================================
+   Wordmark
+   ============================================================ */
+.logo {
+  position: relative;
+  display: inline-flex;
+  align-items: baseline;
+  font-size: 1.32rem;
+  line-height: 1;
+  color: var(--ink);
+  padding-bottom: 6px;
+  user-select: none;
+}
+
+.logo__code {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.logo__doodle {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.logo__mark {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  bottom: -1px;
+  width: calc(100% - 4px);
+  height: 8px;
+  opacity: 0;
+  transform: scaleX(0.85);
+  transform-origin: left;
+  transition: opacity 0.4s var(--ease-out), transform 0.5s var(--ease-out);
+}
+
+a:hover .logo__mark,
+.logo:hover .logo__mark {
+  opacity: 1;
+  transform: scaleX(1);
+}
