@@ -2,6 +2,8 @@
    Marquee — two rows of pill chips, drifting opposite directions
    ============================================================ */
 .marquee {
+  width: 100%;
+  max-width: 100%;
   padding-block: clamp(1.1rem, 2.6vw, 1.6rem);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
@@ -12,7 +14,10 @@
 
 .marquee__row {
   position: relative;
+  width: 100%;
+  max-width: 100%;
   overflow: hidden;
+  contain: layout paint;
   -webkit-mask-image: linear-gradient(
     90deg,
     transparent,

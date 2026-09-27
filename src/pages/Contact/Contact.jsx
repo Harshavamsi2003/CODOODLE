@@ -5,7 +5,14 @@ import ContactIcons from "../../components/ContactIcons/ContactIcons.jsx";
 import "./Contact.css";
 
 const PROJECT_TYPES = ["Website", "Portfolio", "E-commerce", "Not sure yet"];
-const WEB3FORMS_KEY = "376649b8-3d19-4d0d-ab95-16439d84b2ec";
+
+// Web3Forms access key, lightly obfuscated so it doesn't sit as plain
+// text in the source. Note: Web3Forms' own docs say this key is public
+// and safe for client-side use — this step is obscurity, not real
+// security, since any client-side JS is always readable in devtools
+// regardless of how it's stored here.
+const _K = "0cjNwIDOzYTZzAjYtQTYzEWLyYDN00iZzMGZtYmNhJWYjdDZ";
+const WEB3FORMS_KEY = atob([..._K].reverse().join(""));
 
 export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", type: "Website", message: "" });

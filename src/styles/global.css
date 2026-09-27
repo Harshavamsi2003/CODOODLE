@@ -15,6 +15,8 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -26,7 +28,15 @@ body {
   letter-spacing: 0.005em;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  width: 100%;
+  max-width: 100vw;
   overflow-x: hidden;
+  position: relative;
+}
+
+#root {
+  overflow-x: hidden;
+  width: 100%;
 }
 
 img,

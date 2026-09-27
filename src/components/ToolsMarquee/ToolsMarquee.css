@@ -4,7 +4,10 @@
    ============================================================ */
 .tools {
   position: relative;
+  width: 100%;
+  max-width: 100%;
   overflow: hidden;
+  contain: layout paint;
   padding-block: clamp(0.5rem, 1.5vw, 0.9rem);
   -webkit-mask-image: linear-gradient(
     90deg,
