@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * useReveal — adds an `inView` flag once the element scrolls into view.
- * Fires once, then unobserves. Respects reduced-motion by revealing instantly.
+ * Fires once, then unobserves.
+ *
+ * Reduced-motion is handled in CSS (see doodle.css): people who prefer
+ * less motion still get the reveal, but as a gentle fade — no sliding,
+ * no blur. So this hook always observes; it never skips the reveal.
  */
 export default function useReveal({ threshold = 0.2, rootMargin = "0px 0px -8% 0px", once = true } = {}) {
   const ref = useRef(null);
@@ -12,12 +16,7 @@ export default function useReveal({ threshold = 0.2, rootMargin = "0px 0px -8% 0
     const node = ref.current;
     if (!node) return;
 
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (prefersReduced || typeof IntersectionObserver === "undefined") {
+    if (typeof IntersectionObserver === "undefined") {
       setInView(true);
       return;
     }

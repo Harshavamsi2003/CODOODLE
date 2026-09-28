@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Reveal from "../../components/Reveal/Reveal.jsx";
 import Stagger from "../../components/Stagger/Stagger.jsx";
 import Doodle from "../../components/Doodle/Doodle.jsx";
+import CtaBand from "../../components/CtaBand/CtaBand.jsx";
 import { SERVICES } from "../../data/index.js";
 import "./Services.css";
 
@@ -131,19 +132,15 @@ export default function Services() {
       </section>
 
       {/* CTA */}
-      <section className="section">
-        <div className="container">
-          <Reveal className="svc-cta">
-            <h2 className="svc-cta__title">Not sure which one you need?</h2>
-            <p className="lead">
-              Tell us about the project and we&apos;ll point you the right way.
-            </p>
-            <Link to="/contact" className="btn btn--coral">
-              Talk to us <span className="arrow">→</span>
-            </Link>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand
+        title={
+          <>
+            Not sure which one you <span className="doodle-word">need?</span>
+          </>
+        }
+        lead="Tell us about the project and we'll point you the right way."
+        primary={{ to: "/contact", label: "Talk to us" }}
+      />
     </main>
   );
 }

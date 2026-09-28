@@ -81,9 +81,13 @@
 
 .doodle--circle {
   position: absolute;
-  inset: -14% -8% -18% -8%;
+  left: -8%;
+  top: 50%;
   width: 116%;
+  max-width: none; /* global svg{max-width:100%} was clipping this to 100% and shifting the ring left */
   height: auto;
+  /* centre the ring on the text (it used to hang below it, so its top edge cut through the letters) */
+  transform: translateY(-50%);
 }
 
 .doodle--arrow { width: 3.4rem; height: auto; }
@@ -117,15 +121,38 @@
   display: inline-block;
 }
 
-/* ---------- Reduced motion: reveal instantly ---------- */
+/* ---------- Reduced motion: keep it GENTLE, not dead ----------
+   "Reduce motion" means less movement — not no feedback at all. So these
+   still fade in as you scroll, but with no sliding, no blur and no
+   clip-wipes (the things that actually trigger discomfort). */
+@keyframes softFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .reveal,
-  .title-wipe,
-  .stagger > * {
-    opacity: 1 !important;
+  .reveal {
     transform: none !important;
     filter: none !important;
+    transition-property: opacity !important;
+    transition-duration: 0.8s !important;
+  }
+
+  .stagger > * {
+    transform: none !important;
+    filter: none !important;
+    transition-property: opacity !important;
+    transition-duration: 0.7s !important;
+  }
+
+  .title-wipe {
     clip-path: none !important;
-    animation: none !important;
+    animation: softFade 0.9s ease 0.1s both !important;
+  }
+
+  /* the little hand-drawn strokes still draw themselves in */
+  .doodle path,
+  .doodle g path {
+    transition-duration: 0.9s !important;
   }
 }

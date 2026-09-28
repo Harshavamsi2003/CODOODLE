@@ -39,6 +39,48 @@ body {
   width: 100%;
 }
 
+/* ------------------------------------------------------------
+   Screen-size tiers
+   The whole site is sized in rem, so changing the root font-size scales
+   type, buttons and spacing together. Each tier also widens the column
+   and the navbar, so a big monitor gets a bigger, calmer layout instead
+   of a small site floating in empty space.
+
+     phones / tablets / laptops ........ base (16px)
+     large desktop   1680+  (and 800+ tall) ..... 18px
+     extra large     2200+  (and 1000+ tall) .... 20px
+     ultra large     2800+  (and 1300+ tall) .... 24px   (1440p ultrawide, 5K)
+     huge            3600+  (and 1800+ tall) .... 28px   (4K at 100%, 8K)
+
+   The height conditions stop a very wide but short window (an ultrawide
+   monitor, or a browser squeezed short) from scaling up until the hero
+   no longer fits.
+   ------------------------------------------------------------ */
+:root {
+  --nav-h: 74px;
+  --nav-h-scrolled: 64px;
+}
+
+@media (min-width: 1680px) and (min-height: 800px) {
+  html { font-size: 112.5%; }
+  :root { --container: 1320px; --nav-h: 83px; --nav-h-scrolled: 72px; }
+}
+
+@media (min-width: 2200px) and (min-height: 1000px) {
+  html { font-size: 125%; }
+  :root { --container: 1500px; --nav-h: 92px; --nav-h-scrolled: 80px; }
+}
+
+@media (min-width: 2800px) and (min-height: 1300px) {
+  html { font-size: 150%; }
+  :root { --container: 1760px; --nav-h: 111px; --nav-h-scrolled: 96px; }
+}
+
+@media (min-width: 3600px) and (min-height: 1800px) {
+  html { font-size: 175%; }
+  :root { --container: 2040px; --nav-h: 130px; --nav-h-scrolled: 112px; }
+}
+
 img,
 svg {
   display: block;
@@ -153,6 +195,20 @@ h4 {
   width: 1.7rem;
   height: 1px;
   background: var(--coral);
+  transform-origin: left center;
+}
+
+/* the little coral line before each eyebrow draws itself in as the
+   section scrolls into view */
+.reveal .eyebrow::before,
+.eyebrow.reveal::before {
+  transform: scaleX(0);
+  transition: transform 0.9s var(--ease-out) 0.3s;
+}
+
+.reveal.is-in .eyebrow::before,
+.eyebrow.reveal.is-in::before {
+  transform: scaleX(1);
 }
 
 .mono {
@@ -377,8 +433,9 @@ h4 {
   transform-style: preserve-3d;
 }
 
+/* reduced motion: pages fade in (no sliding / 3D tilt / blur) */
 @media (prefers-reduced-motion: reduce) {
   .route-view {
-    animation: none;
+    animation: softFade 0.55s ease both !important;
   }
 }

@@ -125,27 +125,6 @@
   font-size: var(--step-0);
 }
 
-/* cta */
-.about-cta {
-  text-align: center;
-  max-width: 42ch;
-  margin-inline: auto;
-  display: grid;
-  gap: 1.2rem;
-  justify-items: center;
-}
-
-.about-cta__title {
-  font-size: var(--step-3);
-}
-
-.about-cta__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.8rem;
-  justify-content: center;
-}
-
 @media (max-width: 720px) {
   .about-meaning__grid {
     grid-template-columns: 1fr;

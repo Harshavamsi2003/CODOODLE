@@ -15,3 +15,4 @@ export { PROCESS } from "./process.js";
 export { VALUES } from "./values.js";
 export { PROJECTS } from "./projects.js";
 export { TESTIMONIALS } from "./testimonials.js";
+export { TERMS } from "./terms.js";

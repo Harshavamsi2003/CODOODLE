@@ -21,7 +21,7 @@ export const CONTACT_LINKS = [
   {
     id: "instagram",
     label: "Instagram",
-    sub: "@codoodle.studio",
+    sub: BRAND.instagramHandle,
     href: BRAND.instagram,
     external: true,
   },

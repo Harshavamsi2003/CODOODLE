@@ -57,8 +57,10 @@ export default function FloatingContact() {
           <span className="fcontact__wave" aria-hidden="true">👋</span>
           <span>
             Hi! Got a project in mind?
-            <br />
-            Say hi on WhatsApp — we reply fast.
+            <span className="fcontact__more">
+              <br />
+              Say hi on WhatsApp — we reply fast.
+            </span>
           </span>
         </div>
       )}

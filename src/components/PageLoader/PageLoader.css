@@ -71,15 +71,24 @@
   }
 }
 
+/* reduced motion: no sliding curtain or blur — a calm fade in and out */
+@keyframes ploaderSoft {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .ploader,
-  .ploader__inner,
-  .ploader__fill {
-    animation: none !important;
-    transition: opacity 0.2s ease !important;
+  .ploader {
+    transition: opacity 0.5s ease !important;
   }
   .ploader.is-out {
     transform: none;
     opacity: 0;
+  }
+  .ploader__inner {
+    animation: ploaderSoft 0.6s ease both !important;
+  }
+  .ploader__fill {
+    animation: ploaderFill 1s var(--ease-out) 0.1s forwards !important;
   }
 }

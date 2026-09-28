@@ -3,6 +3,7 @@ import Reveal from "../../components/Reveal/Reveal.jsx";
 import Stagger from "../../components/Stagger/Stagger.jsx";
 import Doodle from "../../components/Doodle/Doodle.jsx";
 import ToolsMarquee from "../../components/ToolsMarquee/ToolsMarquee.jsx";
+import CtaBand from "../../components/CtaBand/CtaBand.jsx";
 import { VALUES, BRAND } from "../../data/index.js";
 import "./About.css";
 
@@ -113,24 +114,16 @@ export default function About() {
       </section>
 
       {/* CTA */}
-      <section className="section">
-        <div className="container">
-          <Reveal className="about-cta">
-            <h2 className="about-cta__title">Let&apos;s make something.</h2>
-            <p className="lead">
-              Have a project in mind? We&apos;d love to hear about it.
-            </p>
-            <div className="about-cta__actions">
-              <Link to="/contact" className="btn btn--coral">
-                Start a project <span className="arrow">→</span>
-              </Link>
-              <a href={`mailto:${BRAND.email}`} className="btn btn--ghost">
-                {BRAND.email}
-              </a>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand
+        title={
+          <>
+            Let&apos;s make <span className="doodle-word">something.</span>
+          </>
+        }
+        lead="Have a project in mind? We'd love to hear about it."
+        primary={{ to: "/contact", label: "Start a project" }}
+        secondary={{ href: `mailto:${BRAND.email}`, label: BRAND.email }}
+      />
     </main>
   );
 }

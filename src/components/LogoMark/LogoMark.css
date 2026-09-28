@@ -1,0 +1,80 @@
+/* ============================================================
+   LogoMark — the <✦> symbol beside the wordmark
+   ============================================================ */
+.lmark {
+  display: block;
+  width: 2.25rem;
+  height: auto;
+  flex: none;
+  color: var(--ink);
+  overflow: visible;
+}
+
+@media (max-width: 820px) {
+  .lmark {
+    width: 2rem;
+  }
+}
+
+.lmark__b,
+.lmark__star {
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* entrance: brackets slide out from the centre, sparkle pops in */
+.lmark__b--l {
+  animation: lmarkL 0.9s var(--ease-out) 0.15s backwards;
+}
+.lmark__b--r {
+  animation: lmarkR 0.9s var(--ease-out) 0.15s backwards;
+}
+
+@keyframes lmarkL {
+  from { transform: translateX(9px); opacity: 0; }
+}
+@keyframes lmarkR {
+  from { transform: translateX(-9px); opacity: 0; }
+}
+
+/* sparkle: pops in, then breathes gently forever */
+.lmark__star {
+  animation: lmarkPop 0.8s var(--ease-out) 0.35s backwards,
+    lmarkBreathe 4.5s ease-in-out 1.4s infinite;
+}
+
+@keyframes lmarkPop {
+  from { transform: scale(0) rotate(-90deg); opacity: 0; }
+}
+
+@keyframes lmarkBreathe {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.14) rotate(8deg); }
+}
+
+/* hover on the brand: brackets open up, sparkle spins */
+.lmark__b {
+  transition: transform 0.45s var(--ease-out);
+}
+
+a:hover > .lmark .lmark__b--l {
+  transform: translateX(-2.4px);
+}
+a:hover > .lmark .lmark__b--r {
+  transform: translateX(2.4px);
+}
+a:hover > .lmark .lmark__star {
+  animation: lmarkSpin 0.8s var(--ease-out) forwards;
+}
+
+@keyframes lmarkSpin {
+  to { transform: scale(1.25) rotate(180deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lmark__b,
+  .lmark__star {
+    animation: none !important;
+    transition: none !important;
+  }
+}

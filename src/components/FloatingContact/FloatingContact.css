@@ -91,6 +91,14 @@
     visibility 0s linear 0.4s;
 }
 
+/* the greeting steps aside while the mobile menu is open */
+body.menu-open .fcontact .fcontact__bubble,
+body.menu-open .fcontact .fcontact__bubble.is-shown {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
 /* little tail pointing at the icon */
 .fcontact__bubble::after {
   content: "";
@@ -159,6 +167,16 @@
   }
 }
 
+/* short screens (phone held sideways): same compact one-liner */
+@media (max-height: 520px) {
+  .fcontact__bubble {
+    padding: 0.6rem 1.7rem 0.6rem 0.8rem;
+  }
+  .fcontact__more {
+    display: none;
+  }
+}
+
 @media (max-width: 560px) {
   .fcontact {
     width: 3.2rem;
@@ -168,7 +186,13 @@
     width: 1.5rem;
     height: 1.5rem;
   }
+  /* on phones the greeting is a short one-liner so it covers as little
+     of the page as possible while it's showing */
   .fcontact__bubble {
     max-width: min(13rem, calc(100vw - 2rem));
+    padding: 0.6rem 1.7rem 0.6rem 0.8rem;
+  }
+  .fcontact__more {
+    display: none;
   }
 }

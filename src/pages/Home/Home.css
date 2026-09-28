@@ -5,13 +5,16 @@
 /* ---------- Hero ---------- */
 .hero {
   position: relative;
+  isolation: isolate;
   min-height: 100svh;
   display: flex;
-  align-items: center;
-  padding-top: clamp(5.5rem, 8vw, 7rem);
-  padding-bottom: clamp(2rem, 4vw, 3rem);
+  flex-direction: column;
+  /* clears the fixed navbar (its height scales with the screen tier), then a little air */
+  padding-top: calc(var(--nav-h) + clamp(1rem, 4vh, 3rem));
+  padding-bottom: clamp(1rem, 3vh, 2rem);
 }
 
+/* --- background layers (all decorative, all behind the copy) --- */
 .hero__blob {
   position: absolute;
   z-index: 0;
@@ -74,55 +77,68 @@
   50% { opacity: 1; transform: scale(1.15) rotate(12deg); }
 }
 
+/* --- copy --- */
 .hero__grid {
   position: relative;
   z-index: 1;
+  flex: 1;
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
 .hero__copy {
   max-width: 46rem;
   text-align: center;
+  /* --p is set from Home.jsx as the page scrolls past the hero (0 → 1) */
+  transform: translate3d(0, calc(var(--p, 0) * 46px), 0);
+  opacity: calc(1 - var(--p, 0) * 0.9);
+  will-change: transform, opacity;
 }
 
-.hero__actions {
-  justify-content: center;
+.hero__blob--1 {
+  translate: 0 calc(var(--p, 0) * -70px);
 }
 
-.hero__proof {
-  justify-content: center;
+.hero__blob--2 {
+  translate: 0 calc(var(--p, 0) * -40px);
 }
 
 .hero__title {
   font-size: var(--step-5);
   letter-spacing: -0.035em;
-  line-height: 0.98;
+  line-height: 1;
+}
+
+.hero__line {
+  display: block;
 }
 
 .hero__title .underlined {
   color: var(--ink);
 }
 
-/* staggered entrance for headline lines */
-.hero__title,
-.hero__lead,
-.hero__actions,
-.hero__proof {
-  animation: heroFade 0.8s var(--ease-out) both;
+/* the cursive "idea." — same treatment as the brand's doodle words */
+.hero__title .doodle-word {
+  font-size: 1.3em;
+  /* the bigger cursive box would otherwise push the two lines apart */
+  margin-block: -0.14em;
 }
-.hero__title {
-  animation-delay: 0.08s;
+
+.hero__idea {
+  position: relative;
+  display: inline-block;
+  /* room for the sparkle so it can never poke outside the line */
+  padding-inline-end: 0.4em;
 }
-.hero__lead {
-  animation-delay: 0.2s;
-}
-.hero__actions {
-  animation-delay: 0.32s;
-}
-.hero__proof {
-  animation-delay: 0.44s;
+
+.hero__idea .hero__idea-star {
+  position: absolute;
+  top: 0.14em;
+  right: 0;
+  width: 0.34em;
+  height: 0.34em;
 }
 
 .hero__lead {
@@ -135,6 +151,7 @@
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.8rem;
   margin-top: 1.6rem;
 }
@@ -142,6 +159,7 @@
 .hero__proof {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.9rem 1.6rem;
   margin-top: 1.7rem;
   padding: 0;
@@ -157,14 +175,89 @@
   color: var(--ink-dim);
 }
 
-@keyframes heroFade {
+/* --- "3 live client sites" pill --- */
+.hero__trusted {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  max-width: 100%;
+  margin-top: clamp(1.3rem, 3vh, 1.9rem);
+  padding: 0.4rem 1.05rem 0.4rem 0.45rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: rgba(244, 241, 233, 0.03);
+}
+
+.hero__avatars {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  flex: none;
+}
+
+.hero__avatars li {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-left: -0.55rem;
+  border-radius: 50%;
+  border: 2px solid var(--bg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.82rem;
+  line-height: 1;
+  color: #12070a;
+}
+
+.hero__avatars li:first-child {
+  margin-left: 0;
+}
+
+.hero__trusted-text {
+  margin: 0;
+  font-size: var(--step--1);
+  color: var(--ink-dim);
+  text-align: left;
+}
+
+.hero__trusted-text strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* --- staggered entrance: each block rises in, in order --- */
+.hero__line,
+.hero__lead,
+.hero__actions,
+.hero__proof,
+.hero__trusted {
+  animation: heroRise 0.95s var(--ease-out) both;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes heroRise {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(24px);
+    filter: blur(8px);
   }
   to {
     opacity: 1;
     transform: none;
+    filter: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .hero__trusted {
+    gap: 0.6rem;
+    padding-right: 0.85rem;
+  }
+  .hero__avatars li {
+    width: 1.75rem;
+    height: 1.75rem;
   }
 }
 
@@ -219,6 +312,11 @@
 
 .services-teaser__foot {
   margin-top: 1.6rem;
+}
+
+/* breathing room between the services list/link and the promises box */
+.services-teaser__foot + .promises {
+  margin-top: clamp(2.4rem, 5vw, 3.6rem);
 }
 
 /* ---------- Trust strip (honest promises) ---------- */
@@ -358,55 +456,10 @@
   font-size: var(--step-0);
 }
 
-/* ---------- CTA ---------- */
-.cta {
-  position: relative;
-}
-
-.cta__blob {
-  position: absolute;
-  z-index: 0;
-  top: 50%;
-  left: 50%;
-  width: 34rem;
-  height: 20rem;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(ellipse, var(--coral-soft), transparent 65%);
-  filter: blur(50px);
-  pointer-events: none;
-  animation: blobDrift 14s var(--ease-soft) infinite;
-}
-
-.cta__inner {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  max-width: 42ch;
-  margin-inline: auto;
-}
-
-.cta__star {
-  width: 1.9rem;
-  margin: 0 auto 1rem;
-}
-
-.cta__title {
-  font-size: var(--step-4);
-}
-
-.cta__word {
-  font-size: 1.15em;
-}
-
-.cta__lead {
-  margin: 1rem auto 1.6rem;
-  font-size: var(--step-0);
-}
-
 /* ---------- Tools teaser ---------- */
 .tools-teaser__head {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 0.5rem 1.2rem;
@@ -455,6 +508,15 @@
   object-fit: cover;
   object-position: top;
   transition: transform 0.6s var(--ease-out), filter 0.5s ease;
+}
+
+/* photo settles into place as its card scrolls into view */
+.wp-card.is-in .wp-card__img {
+  animation: imgSettle 1.5s var(--ease-out) backwards;
+}
+
+@keyframes imgSettle {
+  from { transform: scale(1.16); filter: saturate(0.7) brightness(0.8); }
 }
 
 .wp-card__frame:hover .wp-card__img {
@@ -556,4 +618,167 @@
   .trust__grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* ============================================================
+   Polish layer — motion + depth (no content changes)
+   ============================================================ */
+
+/* Work cards: warm glow + coral edge on hover */
+.wp-card__frame {
+  transition: border-color 0.4s ease, box-shadow 0.5s ease;
+}
+
+.wp-card__frame:hover,
+.wp-card__frame:focus-visible {
+  border-color: rgba(255, 106, 61, 0.55);
+  box-shadow: 0 40px 90px -42px rgba(255, 106, 61, 0.5),
+    0 30px 70px -45px rgba(0, 0, 0, 0.9);
+}
+
+/* Service rows: a coral line draws itself under the row on hover */
+.svc-row {
+  position: relative;
+}
+
+.svc-row::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--coral), transparent 80%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.svc-row:hover::after {
+  transform: scaleX(1);
+}
+
+/* Process: each step's top line grows across as it scrolls into view */
+.process__step::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--coral), transparent 85%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.3s var(--ease-out) 0.4s;
+}
+
+.process__step.is-in::before {
+  transform: scaleX(1);
+}
+
+/* Trust + promise cells: the sparkle / tick reacts on hover */
+.trust__star {
+  transition: transform 0.6s var(--ease-out);
+}
+
+.trust__cell:hover .trust__star {
+  transform: rotate(90deg) scale(1.2);
+}
+
+.promises__k {
+  transition: transform 0.4s var(--ease-out);
+}
+
+.promises__cell:hover .promises__k {
+  transform: translateY(-2px) scale(1.15);
+}
+
+/* ---------- Touch screens: there is no hover, so give equivalent feedback ---------- */
+@media (hover: none) {
+  /* the "Visit live" pill is always visible instead of hover-only */
+  .wp-card__visit {
+    opacity: 1;
+    transform: none;
+    font-size: 0.7rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .wp-card__frame:active .wp-card__img {
+    transform: scale(1.04);
+  }
+
+  .svc-row:active,
+  .promises__cell:active,
+  .trust__cell:active {
+    background: rgba(255, 106, 61, 0.06);
+  }
+
+  .svc-row:hover {
+    transform: none;
+  }
+}
+
+/* ============================================================
+   Reduced motion — gentle version of the hero
+   Fades only: no rising, no blur, no drifting, no looping.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .hero__line,
+  .hero__lead,
+  .hero__actions,
+  .hero__proof,
+  .hero__trusted {
+    animation: softFade 1s ease both !important;
+    animation-delay: var(--d, 0s) !important;
+  }
+
+  /* scrolling past the hero: fade out, but don't slide */
+  .hero__copy {
+    transform: none !important;
+  }
+  .hero__blob--1,
+  .hero__blob--2 {
+    translate: none !important;
+  }
+
+  /* stars ease in once and stay softly lit (no twinkling loop) */
+  .star-field__star {
+    animation: starEaseIn 2.4s ease both !important;
+    animation-delay: 0.6s !important;
+    transform: none !important;
+  }
+  @keyframes starEaseIn {
+    from { opacity: 0; }
+    to { opacity: 0.7; }
+  }
+}
+
+/* ============================================================
+   Big screens: give the hero more presence
+   The root font-size already scales the whole site (see global.css);
+   on very large monitors the headline gets a further boost so it
+   doesn't look small in a huge canvas. Same height gates as the tiers.
+   ============================================================ */
+@media (min-width: 1680px) and (min-height: 800px) {
+  .hero__copy { max-width: 50rem; }
+  .hero__title { font-size: calc(var(--step-5) * 1.1); }
+  .hero__lead { font-size: calc(var(--step-0) * 1.06); }
+}
+
+@media (min-width: 2200px) and (min-height: 1000px) {
+  .hero__copy { max-width: 56rem; }
+  .hero__title { font-size: calc(var(--step-5) * 1.22); }
+  .hero__lead { font-size: calc(var(--step-0) * 1.12); }
+}
+
+@media (min-width: 2800px) and (min-height: 1300px) {
+  .hero__copy { max-width: 60rem; }
+  .hero__title { font-size: calc(var(--step-5) * 1.3); }
+  .hero__lead { font-size: calc(var(--step-0) * 1.15); }
+}
+
+@media (min-width: 3600px) and (min-height: 1800px) {
+  .hero__copy { max-width: 64rem; }
+  .hero__title { font-size: calc(var(--step-5) * 1.36); }
+  .hero__lead { font-size: calc(var(--step-0) * 1.18); }
 }

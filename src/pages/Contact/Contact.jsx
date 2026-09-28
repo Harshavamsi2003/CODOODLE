@@ -2,7 +2,7 @@ import { useState } from "react";
 import Reveal from "../../components/Reveal/Reveal.jsx";
 import Doodle from "../../components/Doodle/Doodle.jsx";
 import ContactIcons from "../../components/ContactIcons/ContactIcons.jsx";
-import { BRAND } from "../../data/index.js";
+import { BRAND, TERMS } from "../../data/index.js";
 import "./Contact.css";
 
 const PROJECT_TYPES = ["Website", "Portfolio", "E-commerce", "Not sure yet"];
@@ -20,6 +20,7 @@ export default function Contact() {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | success | error
   const [errorMsg, setErrorMsg] = useState("");
+  const [agreed, setAgreed] = useState(false);
 
   const update = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
@@ -27,6 +28,7 @@ export default function Contact() {
     const next = {};
     if (!form.name.trim()) next.name = "Your name helps us say hello.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = "A valid email so we can reply.";
+    if (!agreed) next.terms = "Please tick the box to agree to the terms before sending.";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -45,6 +47,7 @@ export default function Contact() {
       replyto: form.email,
       project_type: form.type,
       message: form.message.trim() || "(No project details provided)",
+      terms_accepted: "Yes — agreed to the terms shown on the contact page",
     };
 
     try {
@@ -75,6 +78,7 @@ export default function Contact() {
     setForm({ name: "", email: "", type: "Website", message: "" });
     setErrors({});
     setErrorMsg("");
+    setAgreed(false);
     setStatus("idle");
   };
 
@@ -169,6 +173,41 @@ export default function Contact() {
                   <textarea id="message" rows="5" value={form.message} onChange={update("message")}
                     placeholder="Anything you'd like us to know — what you're building, timeline, ideas… (optional)" />
                 </div>
+
+                <fieldset className={`terms ${errors.terms ? "has-error" : ""}`}>
+                  <legend className="terms__title mono">Before you send</legend>
+                  <ul className="terms__list">
+                    {TERMS.map((t) => (
+                      <li key={t.id} className="terms__item">
+                        <span className="terms__dot" aria-hidden="true" />
+                        <span>
+                          <strong>{t.lead}.</strong> {t.text}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <label className="terms__agree">
+                    <input
+                      type="checkbox"
+                      checked={agreed}
+                      onChange={(e) => {
+                        setAgreed(e.target.checked);
+                        if (e.target.checked) setErrors((er) => ({ ...er, terms: undefined }));
+                      }}
+                      aria-invalid={!!errors.terms}
+                    />
+                    <span className="terms__box" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none">
+                        <path d="M5 12.5l4.4 4.4L19 7.4" />
+                      </svg>
+                    </span>
+                    <span className="terms__label">I&apos;ve read and agree to these terms.</span>
+                  </label>
+                  {errors.terms && (
+                    <span className="field__err" role="alert">{errors.terms}</span>
+                  )}
+                </fieldset>
 
                 {status === "error" && (
                   <p className="contact-form__status is-error" role="alert">

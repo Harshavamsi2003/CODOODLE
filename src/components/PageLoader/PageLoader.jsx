@@ -19,10 +19,9 @@ export default function PageLoader() {
 
   useEffect(() => {
     if (phase === "done") return;
-    const reduce =
-      window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    const toOut = setTimeout(() => setPhase("out"), reduce ? 150 : 1050);
+    // Same length for everyone. With "reduce motion" on, the CSS swaps the
+    // sliding curtain for a plain fade, so it's still gentle.
+    const toOut = setTimeout(() => setPhase("out"), 1050);
     const toDone = setTimeout(() => {
       setPhase("done");
       try {
@@ -30,7 +29,7 @@ export default function PageLoader() {
       } catch {
         /* private mode — fine to skip */
       }
-    }, reduce ? 200 : 1550);
+    }, 1550);
 
     return () => {
       clearTimeout(toOut);

@@ -1,8 +1,10 @@
+import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import Reveal from "../../components/Reveal/Reveal.jsx";
 import Stagger from "../../components/Stagger/Stagger.jsx";
 import Doodle from "../../components/Doodle/Doodle.jsx";
 import Marquee from "../../components/Marquee/Marquee.jsx";
+import CtaBand from "../../components/CtaBand/CtaBand.jsx";
 import ToolsMarquee from "../../components/ToolsMarquee/ToolsMarquee.jsx";
 import useTilt from "../../hooks/useTilt.js";
 import { SERVICES, PROCESS, PROJECTS } from "../../data/index.js";
@@ -17,6 +19,8 @@ const STARS = [
   { top: "38%", left: "88%", size: "0.5rem", delay: "2.3s" },
   { top: "78%", left: "34%", size: "0.55rem", delay: "1.5s" },
 ];
+
+const AVATAR_COLORS = ["var(--coral)", "var(--peri)", "var(--butter)"];
 
 const PROMISES = [
   { v: "Live preview links", n: "Watch it come together the whole way." },
@@ -61,10 +65,37 @@ function WorkCard({ p, index }) {
 }
 
 export default function Home() {
+  const heroRef = useRef(null);
+
+  // As you scroll past the hero, its copy drifts down and fades a little
+  // (--p goes 0 → 1). The background stays solid. For people who prefer
+  // reduced motion, CSS turns this into a fade only (no drifting).
+  useEffect(() => {
+    const el = heroRef.current;
+    if (!el) return;
+
+    let raf = 0;
+    const update = () => {
+      const p = Math.min(Math.max(window.scrollY / (el.offsetHeight * 0.85), 0), 1);
+      el.style.setProperty("--p", p.toFixed(3));
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", onScroll);
+    };
+  }, []);
+
   return (
     <main className="home">
       {/* ---------------- Hero ---------------- */}
-      <section className="hero">
+      <section className="hero" ref={heroRef}>
         <span className="hero__blob hero__blob--1" aria-hidden="true" />
         <span className="hero__blob hero__blob--2" aria-hidden="true" />
         <div className="star-field" aria-hidden="true">
@@ -78,29 +109,39 @@ export default function Home() {
             </span>
           ))}
         </div>
+
         <div className="container hero__grid">
           <div className="hero__copy">
             <h1 className="hero__title">
-              We sketch the{" "}
-              <span className="underlined">
-                idea.
-                <Doodle name="underline" color="var(--peri)" delay={400} />
+              <span className="hero__line" style={{ "--d": "0.1s" }}>
+                We sketch the{" "}
+                <span className="hero__idea">
+                  <span className="doodle-word">idea.</span>
+                  <Doodle
+                    name="star"
+                    color="var(--butter)"
+                    loop
+                    className="hero__idea-star"
+                    delay={900}
+                  />
+                </span>
               </span>
-              <br />
-              We ship the{" "}
-              <span className="underlined">
-                code.
-                <Doodle name="underline" color="var(--coral)" delay={700} />
+              <span className="hero__line" style={{ "--d": "0.26s" }}>
+                We ship the{" "}
+                <span className="underlined">
+                  code.
+                  <Doodle name="underline" color="var(--coral)" delay={800} />
+                </span>
               </span>
             </h1>
 
-            <p className="lead hero__lead">
+            <p className="lead hero__lead" style={{ "--d": "0.42s" }}>
               Codoodle is a web studio that designs and builds premium websites,
               portfolios and online stores — the kind that load fast, look sharp
               and make people trust the business behind them.
             </p>
 
-            <div className="hero__actions">
+            <div className="hero__actions" style={{ "--d": "0.56s" }}>
               <Link to="/contact" className="btn btn--coral">
                 Start a project <span className="arrow">→</span>
               </Link>
@@ -109,7 +150,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <ul className="hero__proof">
+            <ul className="hero__proof" style={{ "--d": "0.7s" }}>
               <li>
                 <Doodle name="check" color="var(--coral)" /> Responsive on every device
               </li>
@@ -120,8 +161,22 @@ export default function Home() {
                 <Doodle name="check" color="var(--butter)" /> Built to hand over
               </li>
             </ul>
+
+            <div className="hero__trusted" style={{ "--d": "0.84s" }}>
+              <ul className="hero__avatars" aria-hidden="true">
+                {PROJECTS.map((p, i) => (
+                  <li key={p.id} style={{ background: AVATAR_COLORS[i % AVATAR_COLORS.length] }}>
+                    {p.name.charAt(0)}
+                  </li>
+                ))}
+              </ul>
+              <p className="hero__trusted-text mono">
+                <strong>{PROJECTS.length}</strong> live client sites, and counting
+              </p>
+            </div>
           </div>
         </div>
+
       </section>
 
       <Marquee />
@@ -261,25 +316,15 @@ export default function Home() {
       </section>
 
       {/* ---------------- Closing CTA ---------------- */}
-      <section className="section cta">
-        <span className="cta__blob" aria-hidden="true" />
-        <div className="container">
-          <Reveal className="cta__inner">
-            <Doodle name="star" color="var(--butter)" loop className="cta__star" />
-            <h2 className="cta__title">
-              Got something you want{" "}
-              <span className="doodle-word cta__word">built?</span>
-            </h2>
-            <p className="lead cta__lead">
-              Tell us the idea. We&apos;ll sketch how it could look and how
-              we&apos;d ship it — no obligation.
-            </p>
-            <Link to="/contact" className="btn btn--coral cta__btn">
-              Start a project <span className="arrow">→</span>
-            </Link>
-          </Reveal>
-        </div>
-      </section>
+      <CtaBand
+        title={
+          <>
+            Got something you want <span className="doodle-word">built?</span>
+          </>
+        }
+        lead="Tell us the idea. We'll sketch how it could look and how we'd ship it — no obligation."
+        primary={{ to: "/contact", label: "Start a project" }}
+      />
     </main>
   );
 }
