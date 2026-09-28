@@ -4,6 +4,11 @@ import Logo from "../Logo/Logo.jsx";
 import { NAV } from "../../data/index.js";
 import "./Navbar.css";
 
+// "Contact" and the "Start a project" button go to the same page, so the
+// button is the only contact entry in the navbar/drawer (the footer menu
+// still lists Contact, since it has no button).
+const LINKS = NAV.filter((item) => item.to !== "/contact");
+
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -37,7 +42,7 @@ export default function Navbar() {
         </Link>
 
         <nav className="nav__links" aria-label="Primary">
-          {NAV.map((item) => (
+          {LINKS.map((item) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -67,7 +72,7 @@ export default function Navbar() {
 
       <div className={`nav__drawer ${open ? "is-open" : ""}`}>
         <nav aria-label="Mobile">
-          {NAV.map((item, i) => (
+          {LINKS.map((item, i) => (
             <NavLink
               key={item.to}
               to={item.to}
@@ -83,7 +88,7 @@ export default function Navbar() {
           <Link
             to="/contact"
             className="btn btn--coral nav__drawer-cta"
-            style={{ transitionDelay: `${open ? 80 + NAV.length * 55 : 0}ms` }}
+            style={{ transitionDelay: `${open ? 80 + LINKS.length * 55 : 0}ms` }}
           >
             Start a project <span className="arrow">→</span>
           </Link>

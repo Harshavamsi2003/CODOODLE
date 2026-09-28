@@ -2,6 +2,7 @@ import { useState } from "react";
 import Reveal from "../../components/Reveal/Reveal.jsx";
 import Doodle from "../../components/Doodle/Doodle.jsx";
 import ContactIcons from "../../components/ContactIcons/ContactIcons.jsx";
+import { BRAND } from "../../data/index.js";
 import "./Contact.css";
 
 const PROJECT_TYPES = ["Website", "Portfolio", "E-commerce", "Not sure yet"];
@@ -18,6 +19,7 @@ export default function Contact() {
   const [form, setForm] = useState({ name: "", email: "", type: "Website", message: "" });
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [errorMsg, setErrorMsg] = useState("");
 
   const update = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
@@ -25,7 +27,6 @@ export default function Contact() {
     const next = {};
     if (!form.name.trim()) next.name = "Your name helps us say hello.";
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) next.email = "A valid email so we can reply.";
-    if (form.message.trim().length < 10) next.message = "A line or two about the project.";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -37,12 +38,13 @@ export default function Contact() {
 
     const data = {
       access_key: WEB3FORMS_KEY,
-      subject: `New project enquiry — ${form.type}`,
+      subject: `New project enquiry from ${form.name} — ${form.type}`,
       from_name: "Codoodle website",
       name: form.name,
       email: form.email,
+      replyto: form.email,
       project_type: form.type,
-      message: form.message,
+      message: form.message.trim() || "(No project details provided)",
     };
 
     try {
@@ -52,8 +54,19 @@ export default function Contact() {
         body: JSON.stringify(data),
       });
       const json = await res.json();
-      setStatus(json.success ? "success" : "error");
-    } catch {
+      if (json.success) {
+        setErrorMsg("");
+        setStatus("success");
+      } else {
+        // Web3Forms tells us exactly what's wrong (bad key, domain not
+        // allowed, rate limit...) — keep it for debugging.
+        console.error("Web3Forms rejected the submission:", json);
+        setErrorMsg(json.message || "");
+        setStatus("error");
+      }
+    } catch (err) {
+      console.error("Web3Forms request failed:", err);
+      setErrorMsg("");
       setStatus("error");
     }
   };
@@ -61,6 +74,7 @@ export default function Contact() {
   const reset = () => {
     setForm({ name: "", email: "", type: "Website", message: "" });
     setErrors({});
+    setErrorMsg("");
     setStatus("idle");
   };
 
@@ -149,16 +163,21 @@ export default function Contact() {
                 </div>
 
                 <div className="field">
-                  <label htmlFor="message">About the project</label>
+                  <label htmlFor="message">
+                    About the project <span className="field__opt">optional</span>
+                  </label>
                   <textarea id="message" rows="5" value={form.message} onChange={update("message")}
-                    placeholder="What are you building, and what would success look like?"
-                    aria-invalid={!!errors.message} />
-                  {errors.message && <span className="field__err">{errors.message}</span>}
+                    placeholder="Anything you'd like us to know — what you're building, timeline, ideas… (optional)" />
                 </div>
 
                 {status === "error" && (
-                  <p className="contact-form__status is-error">
-                    Something went wrong sending that. Please try again, or email us directly.
+                  <p className="contact-form__status is-error" role="alert">
+                    That didn&apos;t send{errorMsg ? ` (${errorMsg})` : ""}. Please try
+                    again, or email us directly at{" "}
+                    <a href={`mailto:${BRAND.email}`} className="link-doodle">
+                      {BRAND.email}
+                    </a>
+                    .
                   </p>
                 )}
 

@@ -3,33 +3,54 @@ import { BRAND } from "../../data/index.js";
 import "./FloatingContact.css";
 
 /**
- * FloatingContact — a single WhatsApp button that lives in the corner
- * of every page. A friendly greeting bubble pops up on its own a
- * moment after the page loads (and again on hover), then settles
- * back down — never blocking anything, easy to dismiss.
+ * FloatingContact — a single WhatsApp button pinned to the bottom-right
+ * corner of every page. The button NEVER moves: the greeting bubble is
+ * absolutely positioned above it, so showing/hiding the bubble can't
+ * shift the icon or overlap page text with the button.
+ *
+ * The bubble pops up once shortly after the page loads, then hides
+ * itself automatically. It can also be closed early with the ×.
  */
+const SHOW_AFTER_MS = 1800;
+const VISIBLE_FOR_MS = 5500;
+const FADE_MS = 500;
+
 export default function FloatingContact() {
-  const [greeting, setGreeting] = useState(false);
-  const [dismissed, setDismissed] = useState(false);
+  const [shown, setShown] = useState(false);
+  const [gone, setGone] = useState(false);
 
   useEffect(() => {
-    const show = setTimeout(() => setGreeting(true), 1600);
-    const hide = setTimeout(() => setGreeting(false), 8000);
+    const show = setTimeout(() => setShown(true), SHOW_AFTER_MS);
+    const hide = setTimeout(() => setShown(false), SHOW_AFTER_MS + VISIBLE_FOR_MS);
+    const remove = setTimeout(
+      () => setGone(true),
+      SHOW_AFTER_MS + VISIBLE_FOR_MS + FADE_MS
+    );
     return () => {
       clearTimeout(show);
       clearTimeout(hide);
+      clearTimeout(remove);
     };
   }, []);
 
+  const close = () => {
+    setShown(false);
+    setTimeout(() => setGone(true), FADE_MS);
+  };
+
   return (
     <div className="fcontact">
-      {!dismissed && (
-        <div className={`fcontact__bubble ${greeting ? "is-shown" : ""}`}>
+      {!gone && (
+        <div
+          className={`fcontact__bubble ${shown ? "is-shown" : ""}`}
+          role="status"
+          aria-hidden={!shown}
+        >
           <button
             type="button"
             className="fcontact__dismiss"
             aria-label="Dismiss"
-            onClick={() => setDismissed(true)}
+            onClick={close}
           >
             ×
           </button>
@@ -48,7 +69,6 @@ export default function FloatingContact() {
         rel="noreferrer"
         className="fcontact__toggle"
         aria-label="Chat with us on WhatsApp"
-        onMouseEnter={() => setGreeting(true)}
       >
         <span className="fcontact__ping" aria-hidden="true" />
         <svg viewBox="0 0 24 24" fill="currentColor" className="fcontact__icon">

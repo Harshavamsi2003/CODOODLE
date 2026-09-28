@@ -73,6 +73,17 @@
   color: var(--ink-dim);
 }
 
+.field__opt {
+  margin-left: 0.4rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line);
+  font-size: 0.7em;
+  color: var(--ink-faint);
+  letter-spacing: 0.03em;
+  text-transform: lowercase;
+}
+
 .field input,
 .field textarea {
   width: 100%;
